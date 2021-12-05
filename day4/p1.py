@@ -24,18 +24,13 @@ class BingoSheet:
                 runningSum += int(self.sheet[x // 5][x % 5])
         return runningSum
         
-inputer = open("Gogogadget/day4/input.txt")
-
-swagdotcom = inputer.readline()
-
-listacle = swagdotcom.split(",")
-
+inputter = open("Gogogadget/AdventOfCode/day4/input.txt")
+listacle = inputter.readline().split(",")
 arrayList = []
-
 numbersSoFar = []
 
 while True:
-    checkLine = inputer.readline()
+    checkLine = inputter.readline()
 
     if not checkLine:
         break
@@ -43,24 +38,31 @@ while True:
     bingoSheet = []
 
     for x in range(0, 5):
-        bingoSheet.append(inputer.readline().removesuffix("\n").split(" "))
+        bingoSheet.append(inputter.readline().removesuffix("\n").split(" "))
         
         while bingoSheet[-1].count("") != 0:
             bingoSheet[-1].remove("")
 
-    
     arrayList.append(BingoSheet(bingoSheet))
 
-
-def gawd(listacle: list, arrayList: list, numbersSoFar: list):
+def part1(listacle: list, arrayList: list):
     for z in listacle:
         for g in arrayList:
             g.setTrue(z)
-            numbersSoFar.append(int(z))
+            if g.checkForWin():
+                return g.unmarkedSum() * int(z)
+
+
+def part2(listacle: list, arrayList: list):
+    finalVal = 0
+    for z in listacle:
+        for g in arrayList:
+            g.setTrue(z)
             if g.checkForWin() and not g.done:
-                print(g.unmarkedSum() * int(z))
-                print("List length: " + str(len(arrayList)))
+                finalVal = g.unmarkedSum() * int(z)
                 g.done = True
+    return finalVal
 
 
-gawd(listacle, arrayList, numbersSoFar)
+print(str(part1(listacle, arrayList) ) + " is the first bingo!")
+print(str(part2(listacle, arrayList) ) + " is the second bingo!")
